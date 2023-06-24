@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const schema = new mongoose.Schema({
+const ownerSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -31,3 +31,6 @@ const schema = new mongoose.Schema({
     default: true
   }
 });
+
+export const ownerModel = mongoose.model('Owners', ownerSchema);
+
