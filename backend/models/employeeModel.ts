@@ -12,6 +12,11 @@ const employeeModel = new mongoose.Schema({
   access: [{
     type: String,
   }],
+  contact: {
+    type: String,
+    required: true,
+    maxLenght: 12,
+  },
   createdDate: Date,
   updatedDate: [String],
   isActive: {
