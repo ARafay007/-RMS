@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const employeeModel = new mongoose.Schema({
+const employeeSchema = new mongoose.Schema({
   restaurant: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'restaurants'
@@ -17,6 +17,15 @@ const employeeModel = new mongoose.Schema({
     required: true,
     maxLenght: 12,
   },
+  password: {
+    type: String,
+    required: true
+  },
+  email: {
+    type: String,
+    unique: true,
+    required: true,
+  },
   createdDate: Date,
   updatedDate: [String],
   isActive: {
@@ -24,3 +33,5 @@ const employeeModel = new mongoose.Schema({
     default: true
   }
 });
+
+export const employeeModel = mongoose.model('employees', employeeSchema);

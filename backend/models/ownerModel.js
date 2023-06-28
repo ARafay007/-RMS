@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const ownerSchema = new mongoose.Schema({
   name: {
@@ -20,6 +20,11 @@ const ownerSchema = new mongoose.Schema({
     type: String,
     maxlength: 10
   },
+  email: {
+    type: String,
+    unique: true,
+    required: true
+  },
   restaurantName: {
     type: String,
     required: true,
@@ -28,9 +33,13 @@ const ownerSchema = new mongoose.Schema({
   updatedDate: [String],
   isActive: {
     type: Boolean,
-    default: true
+    default: false
+  },
+  isRejected: {
+    type: Boolean,
+    default: false
   }
 });
 
-export const ownerModel = mongoose.model('Owners', ownerSchema);
+exports.ownerModel = mongoose.model('Owners', ownerSchema);
 
