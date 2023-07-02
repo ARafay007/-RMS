@@ -1,5 +1,4 @@
-import mongoose from 'mongoose';
-import { resourceUsage } from 'process';
+const mongoose = require('mongoose');
 
 const adminSchema = new mongoose.Schema({
     name: {
@@ -16,3 +15,5 @@ const adminSchema = new mongoose.Schema({
         required: true
     }
 });
+
+exports.adminModel = mongoose.model('admins', adminSchema);

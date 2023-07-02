@@ -1,21 +1,16 @@
 const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
-const routing = require('./routes/ownerRoutes');
+const routes = require('./routes/');
 
 const app = express();
 
 app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.send('Yo! baby this end point is working');
-});
-
-app.use('/owner', routing);
+app.use('/owner', routes.ownerRoutes);
+app.use('/admin', routes.adminRoutes);
 
 const DB = process.env.DB?.replace('<PASSWORD>', process.env.DB_PASSWORD);
-
-console.log(DB);
 
 mongoose.connect(DB, {
   useNewUrlParser: true,

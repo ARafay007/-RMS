@@ -1,9 +1,9 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const employeeSchema = new mongoose.Schema({
   restaurant: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'restaurants'
+    ref: 'Owners'
   },
   name: {
     type: String,
@@ -34,4 +34,4 @@ const employeeSchema = new mongoose.Schema({
   }
 });
 
-export const employeeModel = mongoose.model('employees', employeeSchema);
+exports.employeeModel = mongoose.model('employees', employeeSchema);

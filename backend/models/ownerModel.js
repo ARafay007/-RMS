@@ -29,6 +29,14 @@ const ownerSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  menu: [
+    // type: Map,
+    // of: [{
+    //   item: String,
+    //   price: Number
+    // }]
+  ],
+  password: String,
   createdDate: Date,
   updatedDate: [String],
   isActive: {
@@ -41,5 +49,5 @@ const ownerSchema = new mongoose.Schema({
   }
 });
 
-exports.ownerModel = mongoose.model('Owners', ownerSchema);
+exports.ownerModel = mongoose.model('owners', ownerSchema);
 

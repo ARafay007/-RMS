@@ -13,6 +13,10 @@ const ordersSchema = new mongoose.Schema({
     },
     restaurants: [{
         name: String,
+        restaurantRef: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Owners'
+        },
         itemList: [{
             item: {
                 type: String,
@@ -36,4 +40,4 @@ const ordersSchema = new mongoose.Schema({
     }
 });
 
-export const orderModel = mongoose.model('Orders', ordersSchema);
+export const orderModel = mongoose.model('orders', ordersSchema);
