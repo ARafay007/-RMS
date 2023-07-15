@@ -16,7 +16,6 @@ exports.shopLogin = catchAsync(async (req, res) => {
 
 exports.addMenu = catchAsync(async (req, res) => {
     const {category, items} = req.body;
-
     const data = await ownerModel.findOneAndUpdate({_id: req.params.ownerId}, 
         {$push: {'menu': {category, items}}},
         // this "set" aggregate will add new property in object and if the property already exist then it will update it
@@ -27,15 +26,17 @@ exports.addMenu = catchAsync(async (req, res) => {
     res.status(200).json({data});
 });
 
-exports.updateItemList = catchAsync(async (req, res) => {
+exports.addMoreItemsInMenu = catchAsync(async (req, res) => {
     const {items, indexNum} = req.body;
-    const data = await ownerModel.find({_id: req.params.ownerId},
-        {$push: {[`menu[${indexNum}].items`]: items}},
+
+    const data = await ownerModel.findOneAndUpdate({_id: req.params.ownerId},
+        {$push: {[`menu.${indexNum}.items`]: {$each: items}}},
         {new: true}
-    )
+    );
+    res.status(200).json({data});
 });
 
-exports.getCategoryWiseItems = catchAsync(async (req, res) => {
-    const {ownerId, indexElem} = req.body;
-    const data = await ownerModel.find((_id = ownerId));
+exports.getMenu = catchAsync(async (req, res) => {
+    const data = await ownerModel.find({_id: req.params.ownerId}, {menu: 1});
+    res.status(200).json({data});
 });

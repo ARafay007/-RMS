@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { text } = require('stream/consumers');
 
 const ownerSchema = new mongoose.Schema({
   name: {
@@ -30,6 +31,14 @@ const ownerSchema = new mongoose.Schema({
     required: true,
   },
   menu: [
+    // **********************
+      // menu field will contain objects and each object will contain 
+      // {
+      //   category: text,
+      //   items: [array of item]
+      // }
+
+    // **********************
     // type: Map,
     // of: [{
     //   item: String,
