@@ -36,6 +36,15 @@ exports.addMoreItemsInMenu = catchAsync(async (req, res) => {
     res.status(200).json({data});
 });
 
+exports.updateItemNameOrPrice = catchAsync(async (req, res) => {
+    const {item, menuIndex, itemIndex} = req.body;
+    const data = await ownerModel.findOneAndUpdate({_id: req.params.ownerId},
+        {[`menu.[${menuIndex}].items.[${itemIndex}]`]: item},
+        {new: true}  
+    );
+    res.status(200).json({data});
+});
+
 exports.getMenu = catchAsync(async (req, res) => {
     const data = await ownerModel.find({_id: req.params.ownerId}, {menu: 1});
     res.status(200).json({data});

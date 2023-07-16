@@ -9,6 +9,7 @@ app.use(express.json());
 
 app.use('/owner', routes.ownerRoutes);
 app.use('/admin', routes.adminRoutes);
+app.use('/order', routes.orderRoutes);
 
 const DB = process.env.DB?.replace('<PASSWORD>', process.env.DB_PASSWORD);
 

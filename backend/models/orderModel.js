@@ -1,7 +1,10 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const ordersSchema = new mongoose.Schema({
-    name: String,
+    name: {
+        type: String,
+        required: true,
+    },
     contact: [{
         type: String,
         required: true,
@@ -11,27 +14,29 @@ const ordersSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    restaurants: [{
-        name: String,
-        restaurantRef: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Owners'
+    restaurantName: String,
+    restaurantRef: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Owners'
+    },
+    itemList: [{
+        item: {
+            type: String,
+            required: true
         },
-        itemList: [{
-            item: {
-                type: String,
-                required: true
-            },
-            price: {
-                type: Number,
-                required: true
-            },
-            quantity: {
-                type: Number,
-                required: true
-            },
-        }]
+        price: {
+            type: Number,
+            required: true
+        },
+        quantity: {
+            type: Number,
+            required: true
+        },
     }],
+    isDispatch: {
+        type: Boolean,
+        default: false
+    },
     createdDate: Date,
     updatedDate: [String],
     isActive: {
@@ -40,4 +45,4 @@ const ordersSchema = new mongoose.Schema({
     }
 });
 
-export const orderModel = mongoose.model('orders', ordersSchema);
+exports.orderModel = mongoose.model('orders', ordersSchema);
