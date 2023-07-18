@@ -24,8 +24,13 @@ exports.createRestaurant = catchAsync(async (req, res) => {
         password += charset.charAt(Math.floor(Math.random() * n));
     }
 
-    const data = await ownerModel.findOneAndUpdate({_id: req.params.ownerId}, {isActive: true, password, menu: {}}, {new: true});
+    // const data = await ownerModel.findOneAndUpdate({_id: req.params.ownerId}, {isActive: true, password, menu: {}}, {new: true});
+    const data = await ownerModel.findById(req.params.ownerId) //{isActive: true, password, menu: {}}, {new: true});
+    data.isActive = true;
+    data.password = '12345678';
+    data.menu = [];
 
+    await data.save();
     // const transporter = nodemailer.createTransport({
     //     service: 'outlook',
     //     auth: {

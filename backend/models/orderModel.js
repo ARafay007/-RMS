@@ -33,6 +33,10 @@ const ordersSchema = new mongoose.Schema({
             required: true
         },
     }],
+    employeeRef: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'employees'
+    },
     isDispatch: {
         type: Boolean,
         default: false

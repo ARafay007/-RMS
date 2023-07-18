@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const { text } = require('stream/consumers');
+const bcrypt = require('bcryptjs');
+const validator = require('validator');
 
 const ownerSchema = new mongoose.Schema({
   name: {
@@ -24,9 +25,14 @@ const ownerSchema = new mongoose.Schema({
   email: {
     type: String,
     unique: true,
-    required: true
+    required: true,
+    validate: [validator.isEmail, 'Please provide a valid email.']
   },
   restaurantName: {
+    type: String,
+    required: true,
+  },
+  location: {
     type: String,
     required: true,
   },
@@ -45,7 +51,11 @@ const ownerSchema = new mongoose.Schema({
     //   price: Number
     // }]
   ],
-  password: String,
+  password: {
+    type: String,
+    maxlength: 8,
+    select: false,
+  },
   createdDate: Date,
   updatedDate: [String],
   isActive: {
@@ -57,6 +67,17 @@ const ownerSchema = new mongoose.Schema({
     default: false
   }
 });
+
+ownerSchema.pre('save', async function(next){
+  if(!this.isModified('password')) return;
+
+  this.password = await bcrypt.hash(this.password, 12);
+  next();
+});
+
+ownerSchema.methods.correctPassword = async function(candidatePassword, encryptedPassword){
+  return await bcrypt.compare(candidatePassword, encryptedPassword);
+};
 
 exports.ownerModel = mongoose.model('owners', ownerSchema);
 

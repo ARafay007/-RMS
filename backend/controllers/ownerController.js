@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 const { ownerModel } = require("../models/ownerModel");
 const { catchAsync } = require("./catchAsync");
 
@@ -6,12 +8,23 @@ exports.shopRequest = catchAsync(async (req, res) => {
     const createdDate = Date.now();
     const data = await ownerModel.create({name, cnic, contactNumber, landLineNumber, email, restaurantName, createdDate});
     res.status(200).json({data});
-})
+});
 
 exports.shopLogin = catchAsync(async (req, res) => {
     const {email, password} = req.body;
-    const data = ownerModel.find({email, password, isActive: true, isRejected: false});
-    res.status(200).json({data: 'good to go!'});
+
+    // 1. check if email and password exist
+    if(!email || !password) throw 'Please provide email or password';
+
+    // 2. check if user exist and password is correct
+    const user = await ownerModel.find({email, isActive: true, isRejected: false}).select('+password');
+    const correct = await bcrypt.compare(password, user[0].password);
+
+    if(!user || !correct) throw 'Email or password is incorrect'
+
+    // 3. If everything okey, send token to client
+    const token = jwt.sign({id: user[0]._id}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRES});
+    res.status(200).json({token, user});
 });
 
 exports.addMenu = catchAsync(async (req, res) => {
@@ -48,4 +61,9 @@ exports.updateItemNameOrPrice = catchAsync(async (req, res) => {
 exports.getMenu = catchAsync(async (req, res) => {
     const data = await ownerModel.find({_id: req.params.ownerId}, {menu: 1});
     res.status(200).json({data});
+});
+
+exports.getRestaurantsRelatedLocation = catchAsync(async (req, res) => {
+    const restaurantNameList = await ownerModel.find({location: req.params.location, isActive: true},{"restaurantName": 1});
+    res.status(200).json({restaurantNameList});
 });

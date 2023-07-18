@@ -7,7 +7,8 @@ exports.addOrder = catchAsync(async (req, res) => {
 });
 
 exports.dispatchOrder = catchAsync(async (req, res) => {
-    const data = await orderModel.findOneAndUpdate({_id: req.params.orderId}, {isDispatch: true});
+    const {employeeRef} = req.body;
+    const data = await orderModel.findOneAndUpdate({_id: req.params.orderId}, {employeeRef, isDispatch: true}, {new: true});
     res.status(200).json({data: true});
 });
 
