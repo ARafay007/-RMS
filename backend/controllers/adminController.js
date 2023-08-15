@@ -1,6 +1,13 @@
 const { ownerModel } = require("../models/ownerModel");
+const { adminModel } = require("../models/adminModel");
 const { catchAsync } = require("./catchAsync");
 const nodemailer = require('nodemailer');
+
+exports.signUpAdmin = catchAsync(async (req, res) => {
+    const {name, password, email, role} = req.body;
+    const data = await adminModel.create({name, password, email, role});
+    res.status(200).json({data});
+});
 
 exports.getAllShopRequests = catchAsync(async (req, res) => {
     const data = await ownerModel.find({

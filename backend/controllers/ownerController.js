@@ -4,9 +4,9 @@ const { ownerModel } = require("../models/ownerModel");
 const { catchAsync } = require("./catchAsync");
 
 exports.shopRequest = catchAsync(async (req, res) => {
-    const {name, cnic, contactNumber, landLineNumber, email, restaurantName} = req.body;
+    const {name, cnic, contactNumber, landLineNumber, email, restaurantName, location} = req.body;
     const createdDate = Date.now();
-    const data = await ownerModel.create({name, cnic, contactNumber, landLineNumber, email, restaurantName, createdDate});
+    const data = await ownerModel.create({name, cnic, contactNumber, landLineNumber, email, restaurantName, createdDate, location});
     res.status(200).json({data});
 });
 
@@ -24,12 +24,33 @@ exports.shopLogin = catchAsync(async (req, res) => {
 
     // 3. If everything okey, send token to client
     const token = jwt.sign({id: user[0]._id}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRES});
-    res.status(200).json({token, user});
+    const {_id, name, role, restaurantName, categories} = user[0];
+    res.status(200).json({token, user: {_id, name, role, restaurantName, categories}});
+});
+
+exports.getLoggedInUserData = catchAsync(async (req, res) => {
+    const user = await ownerModel.find({_id: req.params.id, isActive: true, isRejected: false}, 
+        {
+            'cnic': 1, 
+            'contactNumber': 1,
+            'email': 1,
+            'menu': 1,
+            'name': 1,
+            'restaurantName': 1,
+            'role': 1
+        });
+    res.status(200).json(user);
 });
 
 exports.addMenu = catchAsync(async (req, res) => {
     const {category, items} = req.body;
     const data = await ownerModel.findOneAndUpdate({_id: req.params.ownerId}, 
+        // **********************
+        // menu field will contain objects and each object will contain "category" field which will be text and "items" fielld which will be an array of dish list.
+        // {
+        //   category: text,
+        //   items: [array of item]
+        // }
         {$push: {'menu': {category, items}}},
         // this "set" aggregate will add new property in object and if the property already exist then it will update it
         // {$set: {[`menu.${category}`]: items}}, 
@@ -60,7 +81,10 @@ exports.updateItemNameOrPrice = catchAsync(async (req, res) => {
 
 exports.getMenu = catchAsync(async (req, res) => {
     const data = await ownerModel.find({_id: req.params.ownerId}, {menu: 1});
-    res.status(200).json({data});
+    const {category} = req.params;
+    const categoryName = category.split('%20').join(' ');
+    const items = data[0].menu.find(el => {if(el.category === categoryName) return el.items});
+    res.status(200).json({data: items});
 });
 
 exports.getRestaurantsRelatedLocation = catchAsync(async (req, res) => {

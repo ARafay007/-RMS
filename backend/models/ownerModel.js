@@ -38,7 +38,7 @@ const ownerSchema = new mongoose.Schema({
   },
   menu: [
     // **********************
-      // menu field will contain objects and each object will contain 
+      // menu field will contain objects and each object will contain "category" field which will be text and "items" fielld which will be an array of dish list.
       // {
       //   category: text,
       //   items: [array of item]
@@ -51,6 +51,10 @@ const ownerSchema = new mongoose.Schema({
     //   price: Number
     // }]
   ],
+  role: {
+    type: String, 
+    default: 'owner'
+  },
   password: {
     type: String,
     maxlength: 8,

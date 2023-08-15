@@ -13,7 +13,11 @@ const adminSchema = new mongoose.Schema({
         type: String,
         unique: true,
         required: true
-    }
+    },
+    role: {
+        type: String,
+        default: 'admin'
+    },
 });
 
 exports.adminModel = mongoose.model('admins', adminSchema);

@@ -26,6 +26,7 @@ const employeeSchema = new mongoose.Schema({
     unique: true,
     required: true,
   },
+  role: 'employee',
   createdDate: Date,
   updatedDate: [String],
   isActive: {
