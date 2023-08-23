@@ -10,10 +10,13 @@ export const loggedInUserSlice = createSlice({
   reducers: {
     setUserDetails: (state, action) => {
       state.value = action.payload
+    },
+    updateMenu: (state, action) => {
+      state.value.menu = action.payload
     }
   }
 });
 
-export const {setUserDetails} = loggedInUserSlice.actions;
+export const {setUserDetails, updateMenu} = loggedInUserSlice.actions;
 
 export default loggedInUserSlice.reducer;
