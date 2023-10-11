@@ -1,8 +1,10 @@
 const {orderModel} = require('../models/orderModel');
 const {catchAsync} = require('./catchAsync');
 
-exports.addOrder = catchAsync(async (req, res) => {
-    const data = await orderModel.insertMany(req.body);
+exports.newOrder = catchAsync(async (req, res) => {
+    const { name, contact, address, restaurantName, restaurantRef, itemList } = req.body;
+    const createdDate = Date.now();
+    const data = await orderModel.insertMany({name, contact, address, restaurantName, restaurantRef, itemList, createdDate});
     res.status(200).json({data});
 });
 

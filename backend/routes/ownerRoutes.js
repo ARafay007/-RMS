@@ -7,7 +7,9 @@ const {
   addMoreItemsInMenu, 
   getMenu, 
   getRestaurantsRelatedLocation, 
-  getLoggedInUserData } = require("../controllers/ownerController");
+  getLoggedInUserData,
+  updateItemNameOrPrice
+} = require("../controllers/ownerController");
 
 const router = express.Router();
 
@@ -20,5 +22,6 @@ router.get('/getMenu/:ownerId/:category', getMenu);
 router.patch('/addMenu/:ownerId', protect, addMenu);
 router.patch('/addMoreItems/:ownerId', addMoreItemsInMenu);
 router.get('/restaurantList/:location', protect, getRestaurantsRelatedLocation);
+router.patch('/updateMenu/:ownerId', protect, updateItemNameOrPrice)
 
 module.exports = router;

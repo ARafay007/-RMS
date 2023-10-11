@@ -5,40 +5,22 @@ import { useRouter } from 'next/navigation'
 import {Layout} from 'antd';
 import { SiderNav } from "@/components/sider";
 import { setUserDetails } from '@/redux/states/loggedInUser';
-import { ownerRoutes } from "@/constants/API_Routes";
+import { fetchOwnerDetail } from "@/redux/actions/owner";
 
 export const ShopLayout = ({children}) => {
   const dispatch = useDispatch();
-  const [isTokenExpired, setIsTokenExpired] = useState(false);
   const {Content} = Layout;
   const router = useRouter();
-  const checkTokenExist = JSON.parse(localStorage.getItem('token')), checkUserExist = JSON.parse(localStorage.getItem('user'));
+  const [checkTokenExist, setCheckTokenExist] = useState(null); 
+  const [checkUserExist, setCheckUserExit] = useState(null);
   const userDetails = useSelector(state => state.loggedInUser.value);
+  const status = useSelector(state => state.loggedInUser.status);
 
   useEffect(() => {
-    fetchLoggedInUserData();
+    setCheckTokenExist(JSON.parse(localStorage.getItem('token')));
+    setCheckUserExit(JSON.parse(localStorage.getItem('user')));
+    fetchOwnerDetail(dispatch);
   }, []);
-  
-  const fetchLoggedInUserData = async () => {
-    if(checkUserExist && checkTokenExist){
-      const {id} = JSON.parse(localStorage.getItem('user'));
-      const token = JSON.parse(localStorage.getItem('token'));
-      const res = await fetch(`${ownerRoutes}/getLoggedInUserData/${id}`, {
-        method: 'GET',
-        headers: {
-          'authorization': `Bearer ${token}`
-        }
-      });
-
-      if(res.status === 400){
-        setIsTokenExpired(true);
-        return;
-      }
-
-      const data = await res.json();
-      dispatch(setUserDetails(data[0]));
-    }
-  }
 
   const headerAccordingToUser = () => {
     if(Object.hasOwn(userDetails, '_id')){
@@ -94,7 +76,7 @@ export const ShopLayout = ({children}) => {
     }
   }
 
-  if(!checkTokenExist || !checkUserExist || isTokenExpired){
+  if(!checkTokenExist || !checkUserExist || status === 'rejected'){
     return(
       <h1>Unauthorized Access</h1>
     );

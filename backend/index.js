@@ -3,6 +3,8 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 require('dotenv').config();
 const routes = require('./routes/');
+const {getRestaurantsRelatedLocation} = require('./controllers/ownerController');
+const {getMenu} = require('./controllers/clientController');
 
 const app = express();
 app.use(cors());
@@ -11,6 +13,8 @@ app.use(express.json());
 app.use('/owner', routes.ownerRoutes);
 app.use('/admin', routes.adminRoutes);
 app.use('/order', routes.orderRoutes);
+app.get('/:location', getRestaurantsRelatedLocation);
+app.get('/getMenu/:id', getMenu);
 
 app.use('*', (req, res) => {
   res.status(400).json({

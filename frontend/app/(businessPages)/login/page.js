@@ -4,7 +4,7 @@ import {  Form, Typography } from 'antd';
 import {Btn} from '../../../components/button';
 import {InputField} from '../../../components/input';
 import styles from './page.module.css';
-import { ownerRoutes } from '../../../constants/API_Routes';
+import { ownerRoutes } from '@/constants';
 
 export default () => {
   const router = useRouter();

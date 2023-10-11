@@ -1,20 +1,14 @@
 'use client'
 import {useState, useRef} from 'react';
-import { Typography, Row, Col, Form, Upload, Button, Input, InputNumber, message, Alert } from "antd";
+import { Typography, Row, Col, Form, Button } from "antd";
 import { useDispatch } from "react-redux";
 import { InputField } from "@/components/input";
-import { Btn } from "@/components/button";
-import styles from './page.module.css';
-import { ownerRoutes } from "@/constants/API_Routes";
-import { updateMenu } from "@/redux/states/loggedInUser";
-import {AddNewItem} from '../../../../container/addNewItem';
-import { contentQuotesLinter } from '@ant-design/cssinjs/lib/linters';
+import { AddNewItem } from '@/container/addNewItem';
 
 export default function(){
   const {Title} = Typography;
   const [form] = Form.useForm();
   const [items, setItems] = useState([]);
-  const [messageApi, contextHolder] = message.useMessage();
   const dispatch = useDispatch();
   const childRef = useRef();
 
@@ -34,7 +28,6 @@ export default function(){
   const getItems = (items) => setItems(items);
 
   const onHandleSubmit = (values) => {
-    console.log('asd');
     const apiRoute = 'addMenu';
 
     const body = {

@@ -25,6 +25,7 @@ exports.shopLogin = catchAsync(async (req, res) => {
     // 3. If everything okey, send token to client
     const token = jwt.sign({id: user[0]._id}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRES});
     const {_id, name, role, restaurantName, categories} = user[0];
+
     res.status(200).json({token, user: {_id, name, role, restaurantName, categories}});
 });
 
@@ -39,7 +40,14 @@ exports.getLoggedInUserData = catchAsync(async (req, res) => {
             'restaurantName': 1,
             'role': 1
         });
-    res.status(200).json(user);
+    
+    // filtering only active items in menu
+    user[0].menu = user[0].menu.map(el => {
+        el.items = el.items.filter(el => el.isActive !== false)
+        return el;
+    });
+        
+    res.status(200).json({data: user[0]});
 });
 
 exports.addMenu = catchAsync(async (req, res) => {
@@ -73,10 +81,16 @@ exports.addMoreItemsInMenu = catchAsync(async (req, res) => {
 exports.updateItemNameOrPrice = catchAsync(async (req, res) => {
     const {item, menuIndex, itemIndex} = req.body;
     const data = await ownerModel.findOneAndUpdate({_id: req.params.ownerId},
-        {[`menu.[${menuIndex}].items.[${itemIndex}]`]: item},
-        {new: true}  
+        {[`menu.${menuIndex}.items.${itemIndex}`]: item},
+        {new: true}
     );
-    res.status(200).json({data});
+
+    const dataWithActiveItems = data.menu.map(el => {
+        el.items = el.items.filter(el => el.isActive !== false)
+        return el;
+    });
+
+    res.status(200).json({data: dataWithActiveItems});
 });
 
 exports.getMenu = catchAsync(async (req, res) => {

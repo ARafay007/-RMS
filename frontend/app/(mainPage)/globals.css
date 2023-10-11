@@ -1,0 +1,86 @@
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body{
+  font-family:Arial, Helvetica, sans-serif;
+}
+
+.body{
+  background-image: url(../../public/double-hamburger-isolated-white-background-fresh-burger-fast-food-with-beef-cream-cheese.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  font-family:Arial, Helvetica, sans-serif;
+}
+
+.mainBodyDiv{
+  display: grid;
+  grid-template-rows: 15% 85% 200px;
+  gap: 10px;
+  /* background-image: url(../../public/double-hamburger-isolated-white-background-fresh-burger-fast-food-with-beef-cream-cheese.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center; */
+  /* font-family:Arial, Helvetica, sans-serif; */
+}
+
+nav{
+  display: flex;
+  align-items: center;
+  /* height: 100px; */
+  padding-left:10px;
+  background-color: rgba(255,255,255,0.9);
+}
+
+h1{
+  font-size: 60px;
+  padding-top:20px;
+  animation: mainHeadingAnimation .8s linear 1;
+}
+/* Hide scrollbar for Chrome, Safari and Opera */
+.cityList{
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  height: auto;
+  width: 80%;
+  height: auto;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  overflow-y: scroll
+}
+
+.cityList::-webkit-scrollbar {
+  display: none;
+}
+
+
+.cities{
+  display: inline-block;
+  width: 300px;
+  height: 200px;
+  border-radius: 10px;
+  background-color: rgba(12, 34, 236, 0.4);
+  margin: 10px;
+  padding: 10px;
+  color: white;
+}
+
+@keyframes mainHeadingAnimation {
+  from{
+    transform: translate(0px, -50px);
+    color: rgba(0, 0, 0, 0.11);
+  }
+  to{
+    transform: translate(0px, 0px);
+    color: rgb(0, 0, 0);
+  }
+}
+
+footer{
+  background-color: rgba(255,255,255,0.9);
+  padding: 10px;
+}

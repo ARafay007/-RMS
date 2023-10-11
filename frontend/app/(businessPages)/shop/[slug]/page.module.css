@@ -25,3 +25,23 @@
 .imgDiv:hover .itemImg{
   transform: scale(1.3);
 }
+
+.items{
+    display: grid;
+    align-content:space-around;
+    padding: 10px;
+    margin: 10px;
+    width: 300px;
+    height: 350px;
+    border-radius: 5px;
+    border: 1px solid rgb(0, 47, 255);
+    background-color: white;
+  }
+.addNewCategory_flexbox{
+    display: flex;
+    justify-content: center;
+    flex-wrap:wrap;
+    /* background-color: black; */
+    height: auto;
+    width: 100%;
+}

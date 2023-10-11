@@ -3,6 +3,7 @@ import {Layout, Menu} from 'antd';
 
 export const SiderNav = ({menuItem, restaurantName}) => {
   const [collapsed, setCollapsed] = useState(false);
+  const [windowOuterHeight, setWindowOuterHeight] = useState(window.outerHeight);
   const {Sider} = Layout;
 
   return(
@@ -14,7 +15,7 @@ export const SiderNav = ({menuItem, restaurantName}) => {
       }}
       style={{
         overflow: 'auto',
-        height: '100vh',
+        height: windowOuterHeight,
         position: 'fixed',
         left: 0,
         top: 0,

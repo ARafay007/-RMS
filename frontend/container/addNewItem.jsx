@@ -1,8 +1,9 @@
 import { useReducer, useEffect, useState, forwardRef, useImperativeHandle } from "react";
 import { useDispatch } from "react-redux";
 import { Form, Upload, Button, Input, Alert, message } from "antd";
-import { ownerRoutes } from "@/constants/API_Routes";
-import { updateMenu } from "@/redux/states/loggedInUser";
+import { ownerRoutes, cloudinaryAPI, status } from "@/constants";
+import { updateMenu, setStatus } from "@/redux/states/loggedInUser";
+import { addNewItem } from "@/redux/actions/owner";
 import styles from './addNewItem.module.css';
 
 const initialItem = [
@@ -129,6 +130,7 @@ export const AddNewItem = forwardRef(({getItems}, ref) => {
             <Input type='number' placeholder='Price' onChange={(e) => setItemNamePriceAndImg(el.key, 'price', e)} />
           </Form.Item>
           <Upload
+            accept=".jpg,.png,.jpeg"
             listType="picture"
             maxCount={1}
             howUploadList={false}
@@ -151,8 +153,9 @@ export const AddNewItem = forwardRef(({getItems}, ref) => {
 
   useImperativeHandle(ref, () => ({
     async onHandleSubmit(apiRoute, body, form){
+      dispatch(setStatus(status.LOADING));
 
-      // THis loop will check and return from the function if any dish item has missing img or any img is above 5MB
+      // This loop will check and return from the function if any dish item has missing img or any img is above 5MB
       for(let i = 0; i < items.length; i++){
         if(items[i].fileSizeError){
           messageApi.open({
@@ -177,39 +180,29 @@ export const AddNewItem = forwardRef(({getItems}, ref) => {
         uploadImgData.append('upload_preset', 'ekriiut7');
         uploadImgData.append('cloud_name', 'doqn4ut3j');
   
-        const resp = await fetch('https://api.cloudinary.com/v1_1/doqn4ut3j/upload', {
+        const resp = await fetch(cloudinaryAPI, {
           method: 'POST',
           body: uploadImgData,
         });
         const data = await resp.json();
-        console.log(data);
         body.items[i].img = data.public_id;
       }
 
-      const token = JSON.parse(localStorage.getItem('token'));
-      const ownerId = JSON.parse(localStorage.getItem('user')).id;
-
-      const resp = await fetch(`${ownerRoutes}/${apiRoute}/${ownerId}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'Application/json',
-          'authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(body),
-      });
+      let isRequestSuccessful = true
+      
+      isRequestSuccessful = addNewItem(dispatch, apiRoute, body);
   
-      if(resp.status === 400){
+      if(!isRequestSuccessful){
         messageApi.open({
           type: 'error',
           content: 'Something went wrong'
         });
         return;
       }
-  
-      const {data} = await resp.json();
-      dispatch(updateMenu(data.menu));
+
       form.resetFields();
       dispatchReducer({type: 'RESET_STATE'});
+      dispatch(setStatus(status.IDLE));
     }
   }));
 

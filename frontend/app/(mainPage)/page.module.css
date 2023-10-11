@@ -1,0 +1,28 @@
+/* Hide scrollbar for Chrome, Safari and Opera */
+.cityList{
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  height: auto;
+  width: 80%;
+  height: auto;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  overflow-y: scroll
+}
+
+.cityList::-webkit-scrollbar {
+  display: none;
+}
+
+
+.cities{
+  display: inline-block;
+  width: 300px;
+  height: 200px;
+  border-radius: 10px;
+  background-color: rgba(12, 34, 236, 0.4);
+  margin: 10px;
+  padding: 10px;
+  color: white;
+}
