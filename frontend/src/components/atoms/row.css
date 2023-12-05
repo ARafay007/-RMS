@@ -1,0 +1,6 @@
+.row{
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  /* background-color: rgb(37,37,37); */
+}
