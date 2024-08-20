@@ -1,0 +1,87 @@
+<script setup>
+  import { RouterView } from 'vue-router';
+  import { SideNavbar } from './';
+</script>
+
+<template>
+  <div id='layout'>
+    <SideNavbar heading='RESTAURANT' :list='[]' />
+    <div id='right_container'>
+      <RouterView />
+    </div>
+  </div>
+</template>
+
+<style scoped>
+  /* FOR SMALL TO LARGE MOBILE */
+  /* @media only screen and (max-width: 425px){ */
+  @media (min-width: 30px) and (max-width: 435px){
+    #layout{
+      display: flex;
+      height: 100%;
+      width: 100%;
+    }
+    #right_container{
+      height: 100%;
+      width: 100%;
+      margin-top: 35px;
+    }
+  }
+
+  /* FOR TABLET */
+  /* @media only screen and (min-width: 426px){ */
+  @media (min-width: 436px) and (max-width: 768px){
+    #layout{
+      display: flex;
+      height: 100%;
+      width: 100%;
+    }
+    #right_container{
+      height: 100%;
+      width: 120%;
+      margin-top: 35px;
+    }
+  }
+  /* FOR LAPTOP */
+  /* @media only screen and (min-width: 769px){ */
+  @media (min-width: 769px) and (max-width: 1024px){
+    #layout{
+      display: flex;
+      height: 100%;
+      width: 100%;
+    }
+    #right_container{
+      height: 100%;
+      width: 82%;
+      margin-top: 35px;
+    }
+  }
+
+  /* FOR LARGE LAPTOP */
+  /* @media only screen and (min-width: 1025px){ */
+  @media (min-width: 1025px) and (max-width: 1440px){
+    #layout{
+      display: flex;
+      height: 100%;
+      width: 100%;
+    }
+    #right_container{
+      height: 100%;
+      width: 82%;
+    }
+  }
+
+  /* FOR 4K */
+  /* @media only screen and (min-width: 1441px){ */
+  @media (min-width: 1441px){
+    #layout{
+      display: flex; 
+      height: 100%;
+      width: 100%;
+    }
+    #right_container{
+      height: 100%;
+      width: 82%;
+    }
+  }
+</style>
